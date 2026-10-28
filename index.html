@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- Hace que la página se adapte a celulares -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ghibli Explorer: explorador interactivo de películas de Studio Ghibli usando una API pública.">
+  <title>Ghibli Explorer 🌸</title>
+
+  <!-- Fuente con estilo anime (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos del proyecto -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ===================== ENCABEZADO ===================== -->
+  <header class="encabezado">
+    <div class="encabezado__contenido">
+      <h1 class="encabezado__titulo">🌸 Ghibli Explorer</h1>
+      <p class="encabezado__subtitulo">Descubre el mágico universo de Studio Ghibli ✨</p>
+
+      <!-- Navegación entre las dos vistas: películas y favoritos -->
+      <nav class="navegacion" aria-label="Secciones">
+        <button id="btn-ver-peliculas" class="navegacion__boton navegacion__boton--activo" type="button">
+          🎞️ Películas
+        </button>
+        <button id="btn-ver-favoritos" class="navegacion__boton" type="button">
+          ❤️ Favoritos <span id="contador-favoritos" class="navegacion__contador">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="principal">
+
+    <!-- ===================== SECCIÓN: PELÍCULAS ===================== -->
+    <section id="seccion-peliculas" aria-labelledby="titulo-peliculas">
+      <h2 id="titulo-peliculas" class="seccion__titulo">🎞️ Todas las películas</h2>
+
+      <!-- Panel de herramientas: buscador y filtros -->
+      <div class="herramientas">
+
+        <!-- Buscador por título -->
+        <div class="herramientas__grupo herramientas__grupo--buscador">
+          <label for="buscador">🔍 Buscar por título</label>
+          <input
+            type="search"
+            id="buscador"
+            placeholder="Ej: Totoro, Chihiro, Mononoke..."
+            autocomplete="off">
+        </div>
+
+        <!-- Filtro por director -->
+        <div class="herramientas__grupo">
+          <label for="filtro-director">🎬 Director</label>
+          <select id="filtro-director">
+            <option value="todos">Todos los directores</option>
+            <!-- script.js agrega aquí los directores que vienen de la API -->
+          </select>
+        </div>
+
+        <!-- Filtro por década de estreno -->
+        <div class="herramientas__grupo">
+          <label for="filtro-decada">📅 Década</label>
+          <select id="filtro-decada">
+            <option value="todas">Todas las décadas</option>
+            <!-- script.js agrega aquí las décadas disponibles -->
+          </select>
+        </div>
+
+        <!-- Botón para limpiar búsqueda y filtros -->
+        <div class="herramientas__grupo herramientas__grupo--boton">
+          <button id="btn-limpiar" class="boton boton--secundario" type="button">
+            🧹 Limpiar
+          </button>
+        </div>
+      </div>
+
+      <!-- Contador de resultados -->
+      <p id="contador-resultados" class="contador-resultados" aria-live="polite"></p>
+
+      <!-- Mensaje: cargando datos de la API -->
+      <div id="mensaje-carga" class="mensaje mensaje--carga" role="status">
+        <span class="mensaje__icono">⏳</span>
+        <p>Cargando películas del mundo Ghibli...</p>
+      </div>
+
+      <!-- Mensaje: falló la consulta a la API -->
+      <div id="mensaje-error" class="mensaje mensaje--error oculto" role="alert">
+        <span class="mensaje__icono">💥</span>
+        <p>No pudimos conectar con la API. Revisa tu internet e intenta de nuevo.</p>
+        <button id="btn-reintentar" class="boton" type="button">🔄 Reintentar</button>
+      </div>
+
+      <!-- Mensaje: no hay resultados para la búsqueda o filtros -->
+      <div id="mensaje-vacio" class="mensaje mensaje--vacio oculto" role="status">
+        <span class="mensaje__icono">🌙</span>
+        <p>No se encontraron películas con esa búsqueda o filtros.</p>
+      </div>
+
+      <!-- Aquí script.js dibuja las tarjetas de películas -->
+      <div id="contenedor-peliculas" class="cuadricula"></div>
+    </section>
+
+    <!-- ===================== SECCIÓN: FAVORITOS ===================== -->
+    <section id="seccion-favoritos" class="oculto" aria-labelledby="titulo-favoritos">
+      <h2 id="titulo-favoritos" class="seccion__titulo">❤️ Mis favoritas</h2>
+
+      <!-- Mensaje: aún no hay favoritos -->
+      <div id="mensaje-sin-favoritos" class="mensaje mensaje--vacio oculto" role="status">
+        <span class="mensaje__icono">💔</span>
+        <p>Todavía no tienes favoritas. Pulsa el corazón en una película para guardarla.</p>
+      </div>
+
+      <!-- Aquí script.js dibuja las tarjetas favoritas (guardadas en localStorage) -->
+      <div id="contenedor-favoritos" class="cuadricula"></div>
+    </section>
+
+  </main>
+
+  <!-- ===================== PLANTILLA DE TARJETA =====================
+       Este bloque NO se muestra. script.js lo copia por cada película,
+       rellena los datos que llegan de la API y lo agrega a la página. -->
+  <template id="plantilla-tarjeta">
+    <article class="tarjeta">
+      <div class="tarjeta__imagen-contenedor">
+        <img class="tarjeta__imagen" src="" alt="" loading="lazy">
+        <button class="tarjeta__favorito" type="button" aria-label="Agregar a favoritos" aria-pressed="false">🤍</button>
+      </div>
+
+      <div class="tarjeta__cuerpo">
+        <h3 class="tarjeta__titulo"></h3>
+        <p class="tarjeta__original"></p>
+
+        <ul class="tarjeta__datos">
+          <li>🎬 <span class="tarjeta__director"></span></li>
+          <li>📅 <span class="tarjeta__anio"></span></li>
+          <li>⏱️ <span class="tarjeta__duracion"></span></li>
+          <li>⭐ <span class="tarjeta__puntuacion"></span></li>
+        </ul>
+
+        <p class="tarjeta__descripcion"></p>
+      </div>
+    </article>
+  </template>
+
+  <!-- ===================== PIE DE PÁGINA ===================== -->
+  <footer class="pie">
+    <p>
+      Datos de la <a href="https://ghibliapi.vercel.app/" target="_blank" rel="noopener">Studio Ghibli API</a>.
+      Películas © Studio Ghibli. Proyecto con fines educativos 🍙
+    </p>
+  </footer>
+
+  <!-- Lógica de la aplicación (se carga al final para que el HTML ya exista) -->
+  <script src="script.js"></script>
+</body>
+</html>

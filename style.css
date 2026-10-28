@@ -1,0 +1,555 @@
+/* =====================================================
+   GHIBLI EXPLORER · style.css
+   Temática anime: rosa sakura 🌸, azul cielo ☁️, verde bosque 🌿
+
+   ÍNDICE
+   1. Variables de color y tipografía
+   2. Reinicio y estilos base
+   3. Encabezado y navegación
+   4. Contenido principal y títulos
+   5. Herramientas: buscador y filtros
+   6. Botones
+   7. Mensajes (carga, error, sin resultados)
+   8. Cuadrícula y tarjetas
+   9. Botón de favorito
+   10. Pie de página
+   11. Animaciones
+   12. Diseño responsivo (celular y tablet)
+   ===================================================== */
+
+
+/* =====================================================
+   1. VARIABLES DE COLOR Y TIPOGRAFÍA
+   (si cambias un color aquí, cambia en toda la página)
+   ===================================================== */
+:root {
+  /* Colores principales */
+  --rosa-sakura: #f7a8c4;
+  --rosa-oscuro: #e0709b;
+  --azul-cielo: #a8d8f0;
+  --azul-profundo: #4a90b8;
+  --verde-bosque: #5a9e6f;
+  --verde-claro: #d6efd8;
+
+  /* Fondos y superficies */
+  --fondo-pagina: linear-gradient(180deg, #fde4ec 0%, #e6f3fb 55%, #e4f4e6 100%);
+  --fondo-tarjeta: #ffffff;
+  --fondo-campo: #ffffff;
+
+  /* Texto */
+  --texto-principal: #3a3a4a;
+  --texto-suave: #6e6e82;
+  --texto-claro: #ffffff;
+
+  /* Bordes y sombras */
+  --borde: #f0d3df;
+  --sombra-suave: 0 4px 14px rgba(224, 112, 155, 0.18);
+  --sombra-fuerte: 0 10px 26px rgba(74, 144, 184, 0.28);
+
+  /* Forma y tipografía */
+  --radio: 18px;
+  --radio-pequeno: 12px;
+  --fuente: 'Zen Maru Gothic', 'Segoe UI', Tahoma, sans-serif;
+}
+
+
+/* =====================================================
+   2. REINICIO Y ESTILOS BASE
+   ===================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--fuente);
+  color: var(--texto-principal);
+  background: var(--fondo-pagina);
+  background-attachment: fixed;
+  min-height: 100vh;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--azul-profundo);
+}
+
+/* Clase auxiliar: esconde un elemento (la usa script.js) */
+.oculto {
+  display: none !important;
+}
+
+
+/* =====================================================
+   3. ENCABEZADO Y NAVEGACIÓN
+   ===================================================== */
+.encabezado {
+  background: linear-gradient(135deg, var(--rosa-sakura), var(--azul-cielo));
+  padding: 2rem 1rem 1.5rem;
+  text-align: center;
+  border-bottom-left-radius: 36px;
+  border-bottom-right-radius: 36px;
+  box-shadow: var(--sombra-suave);
+}
+
+.encabezado__contenido {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.encabezado__titulo {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--texto-claro);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  letter-spacing: 1px;
+}
+
+.encabezado__subtitulo {
+  margin-top: 0.3rem;
+  font-size: 1.05rem;
+  color: var(--texto-claro);
+  opacity: 0.95;
+}
+
+.navegacion {
+  margin-top: 1.4rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.navegacion__boton {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.6rem 1.3rem;
+  border: 2px solid var(--texto-claro);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+  color: var(--texto-claro);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.navegacion__boton:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Botón de la sección que está abierta */
+.navegacion__boton--activo {
+  background: var(--texto-claro);
+  color: var(--rosa-oscuro);
+}
+
+.navegacion__contador {
+  display: inline-block;
+  min-width: 1.5rem;
+  margin-left: 0.2rem;
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  background: var(--rosa-oscuro);
+  color: var(--texto-claro);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+
+/* =====================================================
+   4. CONTENIDO PRINCIPAL Y TÍTULOS
+   ===================================================== */
+.principal {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.seccion__titulo {
+  font-size: 1.6rem;
+  color: var(--azul-profundo);
+  margin-bottom: 1.2rem;
+}
+
+
+/* =====================================================
+   5. HERRAMIENTAS: BUSCADOR Y FILTROS
+   ===================================================== */
+.herramientas {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 1rem;
+  align-items: end;
+  background: var(--fondo-tarjeta);
+  border: 2px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 1.2rem;
+  box-shadow: var(--sombra-suave);
+}
+
+.herramientas__grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.herramientas__grupo label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--texto-suave);
+}
+
+.herramientas input,
+.herramientas select {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.65rem 0.9rem;
+  border: 2px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+  background: var(--fondo-campo);
+  color: var(--texto-principal);
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.herramientas input:focus,
+.herramientas select:focus {
+  outline: none;
+  border-color: var(--rosa-oscuro);
+  box-shadow: 0 0 0 4px rgba(247, 168, 196, 0.35);
+}
+
+.contador-resultados {
+  margin: 1.2rem 0 0.8rem;
+  font-weight: 700;
+  color: var(--texto-suave);
+}
+
+
+/* =====================================================
+   6. BOTONES
+   ===================================================== */
+.boton {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.65rem 1.4rem;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--rosa-oscuro), var(--rosa-sakura));
+  color: var(--texto-claro);
+  cursor: pointer;
+  box-shadow: var(--sombra-suave);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.boton:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-fuerte);
+}
+
+.boton:active {
+  transform: translateY(0);
+}
+
+.boton--secundario {
+  background: var(--verde-claro);
+  color: var(--verde-bosque);
+  box-shadow: none;
+}
+
+/* Foco visible para quienes navegan con teclado */
+.boton:focus-visible,
+.navegacion__boton:focus-visible,
+.tarjeta__favorito:focus-visible {
+  outline: 3px solid var(--azul-profundo);
+  outline-offset: 3px;
+}
+
+
+/* =====================================================
+   7. MENSAJES (CARGA, ERROR, SIN RESULTADOS)
+   ===================================================== */
+.mensaje {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  margin: 1.5rem auto;
+  max-width: 520px;
+  background: var(--fondo-tarjeta);
+  border: 2px dashed var(--borde);
+  border-radius: var(--radio);
+  color: var(--texto-suave);
+}
+
+.mensaje__icono {
+  font-size: 3rem;
+}
+
+.mensaje--carga .mensaje__icono {
+  animation: latido 1.2s ease-in-out infinite;
+}
+
+.mensaje--error {
+  border-color: #e88a8a;
+  background: #fff3f3;
+  color: #a94442;
+}
+
+.mensaje--vacio {
+  border-color: var(--azul-cielo);
+}
+
+
+/* =====================================================
+   8. CUADRÍCULA Y TARJETAS
+   ===================================================== */
+.cuadricula {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  background: var(--fondo-tarjeta);
+  border: 2px solid var(--borde);
+  border-radius: var(--radio);
+  overflow: hidden;
+  box-shadow: var(--sombra-suave);
+  transition: transform 0.25s, box-shadow 0.25s;
+  animation: aparecer 0.5s ease both;
+}
+
+.tarjeta:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sombra-fuerte);
+}
+
+.tarjeta__imagen-contenedor {
+  position: relative;
+  aspect-ratio: 2 / 3;               /* proporción de póster */
+  background: var(--azul-cielo);
+  overflow: hidden;
+}
+
+.tarjeta__imagen {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+
+.tarjeta:hover .tarjeta__imagen {
+  transform: scale(1.05);
+}
+
+.tarjeta__cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 1.1rem 1.2rem;
+  flex: 1;
+}
+
+.tarjeta__titulo {
+  font-size: 1.25rem;
+  color: var(--rosa-oscuro);
+  line-height: 1.25;
+}
+
+.tarjeta__original {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--texto-suave);
+}
+
+.tarjeta__datos {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.9rem;
+  font-size: 0.88rem;
+  color: var(--texto-suave);
+  padding: 0.5rem 0;
+  border-top: 1px dashed var(--borde);
+  border-bottom: 1px dashed var(--borde);
+}
+
+.tarjeta__descripcion {
+  font-size: 0.93rem;
+  color: var(--texto-principal);
+  /* Muestra máximo 5 líneas y corta con "..." */
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+
+/* =====================================================
+   9. BOTÓN DE FAVORITO (corazón sobre la imagen)
+   ===================================================== */
+.tarjeta__favorito {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.tarjeta__favorito:hover {
+  transform: scale(1.15);
+}
+
+/* Cuando script.js marca la película como favorita (aria-pressed="true") */
+.tarjeta__favorito[aria-pressed="true"] {
+  background: var(--rosa-sakura);
+  animation: latido 0.4s ease;
+}
+
+
+/* =====================================================
+   10. PIE DE PÁGINA
+   ===================================================== */
+.pie {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+  background: rgba(255, 255, 255, 0.55);
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+}
+
+
+/* =====================================================
+   11. ANIMACIONES
+   ===================================================== */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes latido {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.2); }
+}
+
+/* Respeta a quienes prefieren menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+
+/* =====================================================
+   12. DISEÑO RESPONSIVO
+   ===================================================== */
+
+/* Tablet: herramientas en dos columnas */
+@media (max-width: 900px) {
+  .herramientas {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .herramientas__grupo--buscador {
+    grid-column: 1 / -1;           /* el buscador ocupa todo el ancho */
+  }
+
+  .herramientas__grupo--boton {
+    grid-column: 1 / -1;
+  }
+
+  .herramientas__grupo--boton .boton {
+    width: 100%;
+  }
+}
+
+/* Celular: todo en una columna */
+@media (max-width: 600px) {
+  .encabezado {
+    padding: 1.5rem 1rem 1.2rem;
+    border-bottom-left-radius: 26px;
+    border-bottom-right-radius: 26px;
+  }
+
+  .encabezado__titulo {
+    font-size: 1.9rem;
+  }
+
+  .encabezado__subtitulo {
+    font-size: 0.95rem;
+  }
+
+  .navegacion__boton {
+    flex: 1;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.95rem;
+  }
+
+  .principal {
+    padding: 1.4rem 0.8rem 2rem;
+  }
+
+  .herramientas {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .cuadricula {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .seccion__titulo {
+    font-size: 1.35rem;
+  }
+}
+
+/* Celulares muy pequeños: una tarjeta por fila */
+@media (max-width: 420px) {
+  .cuadricula {
+    grid-template-columns: 1fr;
+  }
+}
