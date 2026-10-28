@@ -1,4 +1,4 @@
-## 💬 Prompts utilizados
+##  Prompts utilizados
 
 Para desarrollar **Ghibli Explorer** primero se redactó un **prompt maestro** (`PROMPT_OPENCODE.md`) con todos los requisitos de la Tarea 3: API de Studio Ghibli, restricciones, requisitos funcionales, trabajo por fases y preparación para la defensa oral. Los demás prompts se derivan de ese documento, uno por cada archivo del proyecto.
 
@@ -6,7 +6,7 @@ Para desarrollar **Ghibli Explorer** primero se redactó un **prompt maestro** (
 
 ---
 
-### 🧱 Prompt 1: Estructura HTML (`index.html`)
+###  Prompt 1: Estructura HTML (`index.html`)
 
 **Prompt:**
 
@@ -27,7 +27,7 @@ Para desarrollar **Ghibli Explorer** primero se redactó un **prompt maestro** (
 
 ---
 
-### 🎨 Prompt 2: Estilos anime y diseño responsivo (`style.css`)
+###  Prompt 2: Estilos anime y diseño responsivo (`style.css`)
 
 **Prompt:**
 
@@ -47,7 +47,7 @@ Para desarrollar **Ghibli Explorer** primero se redactó un **prompt maestro** (
 
 ---
 
-### ⚙️ Prompt 3: Lógica con `fetch()`, buscador, filtros y favoritos (`script.js`)
+###  Prompt 3: Lógica con `fetch()`, buscador, filtros y favoritos (`script.js`)
 
 **Prompt:**
 
@@ -66,8 +66,8 @@ Para desarrollar **Ghibli Explorer** primero se redactó un **prompt maestro** (
 
 ---
 
-### 🔎 Nota sobre el uso de los prompts
+###  Nota sobre el uso de los prompts
 
 - Los tres prompts se derivan del **prompt maestro**, que contiene los requisitos de la tarea.
 - Cada prompt generó **un archivo**, por lo que corresponden a **al menos tres commits** distintos.
-- El código generado se **revisó y probó** antes de subirlo al repositorio. *(Escriban aquí qué revisaron, qué corrigieron y qué errores encontraron; así completan las secciones de respuesta corregida y error resuelto del README.)*
+- El código generado se **revisó y probó** antes de subirlo al repositorio.
