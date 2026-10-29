@@ -12,7 +12,8 @@
    8. Favoritos con localStorage
    9. Navegación entre Películas y Favoritos
    10. Eventos (clics, escritura, cambios)
-   11. Inicio de la aplicación
+   11. Modo oscuro (reto extra)
+   12. Inicio de la aplicación
    ===================================================== */
 
 
@@ -25,6 +26,9 @@ const URL_API = 'https://ghibliapi.vercel.app/films';
 
 // Nombre con el que guardamos los favoritos en localStorage
 const CLAVE_FAVORITOS = 'ghibli-favoritos';
+
+// Nombre con el que guardamos el tema (claro u oscuro) en localStorage
+const CLAVE_TEMA = 'ghibli-tema';
 
 // Imagen de respaldo (un SVG sencillo) por si una imagen de la API no carga
 const IMAGEN_RESPALDO =
@@ -51,6 +55,7 @@ const seccionFavoritos   = document.getElementById('seccion-favoritos');
 const btnVerPeliculas    = document.getElementById('btn-ver-peliculas');
 const btnVerFavoritos    = document.getElementById('btn-ver-favoritos');
 const contadorFavoritos  = document.getElementById('contador-favoritos');
+const btnTema            = document.getElementById('btn-tema');
 
 const inputBuscador      = document.getElementById('buscador');
 const filtroDirector     = document.getElementById('filtro-director');
@@ -422,8 +427,65 @@ contenedorFavoritos.addEventListener('click', manejarClicFavorito);
 
 
 /* =====================================================
-   11. INICIO DE LA APLICACIÓN
+   11. MODO OSCURO (RETO EXTRA)
+   Funcionamiento: guardamos el tema en el atributo
+   data-tema de <html>. El CSS tiene colores distintos
+   para data-tema="oscuro", así que al cambiar el
+   atributo cambia toda la página. La elección se
+   guarda en localStorage para recordarla.
    ===================================================== */
-favoritos = leerFavoritos();     // 1) leemos los favoritos guardados
-actualizarContadorFavoritos();   // 2) mostramos cuántos hay
-cargarPeliculas();               // 3) pedimos las películas a la API
+
+// Lee el tema guardado. Si no hay ninguno, usa el del dispositivo.
+function leerTema() {
+  try {
+    const guardado = localStorage.getItem(CLAVE_TEMA);
+    if (guardado === 'claro' || guardado === 'oscuro') {
+      return guardado;
+    }
+  } catch (error) {
+    console.error('No se pudo leer el tema:', error);
+  }
+
+  // Sin tema guardado: respetamos la preferencia del sistema
+  const prefiereOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return prefiereOscuro ? 'oscuro' : 'claro';
+}
+
+// Aplica el tema a la página y actualiza el botón
+function aplicarTema(tema) {
+  const esOscuro = tema === 'oscuro';
+
+  document.documentElement.setAttribute('data-tema', tema);
+
+  btnTema.textContent = esOscuro ? '☀️ Modo claro' : '🌙 Modo oscuro';
+  btnTema.setAttribute('aria-pressed', String(esOscuro));
+  btnTema.setAttribute(
+    'aria-label',
+    esOscuro ? 'Activar modo claro' : 'Activar modo oscuro'
+  );
+}
+
+// Cambia de claro a oscuro (o al revés) y guarda la elección
+function alternarTema() {
+  const temaActual = document.documentElement.getAttribute('data-tema');
+  const nuevoTema = temaActual === 'oscuro' ? 'claro' : 'oscuro';
+
+  aplicarTema(nuevoTema);
+
+  try {
+    localStorage.setItem(CLAVE_TEMA, nuevoTema);
+  } catch (error) {
+    console.error('No se pudo guardar el tema:', error);
+  }
+}
+
+btnTema.addEventListener('click', alternarTema);
+
+
+/* =====================================================
+   12. INICIO DE LA APLICACIÓN
+   ===================================================== */
+aplicarTema(leerTema());         // 1) aplicamos el tema (claro u oscuro)
+favoritos = leerFavoritos();     // 2) leemos los favoritos guardados
+actualizarContadorFavoritos();   // 3) mostramos cuántos hay
+cargarPeliculas();               // 4) pedimos las películas a la API
