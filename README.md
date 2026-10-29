@@ -71,3 +71,4 @@ Para desarrollar **Ghibli Explorer** primero se redactó un **prompt maestro** (
 - Los tres prompts se derivan del **prompt maestro**, que contiene los requisitos de la tarea.
 - Cada prompt generó **un archivo**, por lo que corresponden a **al menos tres commits** distintos.
 - El código generado se **revisó y probó** antes de subirlo al repositorio.
+- hubo un error pero no fue de codigo si no que tuve que refrescar el navegador para que el modo oscuro se vea
