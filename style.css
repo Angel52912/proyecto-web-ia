@@ -15,6 +15,7 @@
    10. Pie de página
    11. Animaciones
    12. Diseño responsivo (celular y tablet)
+   13. Modo oscuro (reto extra)
    ===================================================== */
 
 
@@ -552,4 +553,47 @@ a {
   .cuadricula {
     grid-template-columns: 1fr;
   }
+}
+
+
+/* =====================================================
+   13. MODO OSCURO (RETO EXTRA)
+   Cuando script.js pone data-tema="oscuro" en <html>,
+   estas variables reemplazan a las del modo claro.
+   Como todo el CSS usa variables, la página cambia sola.
+   ===================================================== */
+:root[data-tema="oscuro"] {
+  /* Le dice al navegador que use controles oscuros (selects, scroll) */
+  color-scheme: dark;
+
+  /* Colores que cambian en modo oscuro */
+  --azul-profundo: #7ec3e6;
+  --verde-claro: #2f4a3a;
+  --verde-bosque: #8fd3a3;
+
+  --fondo-pagina: linear-gradient(180deg, #1b1a2e 0%, #232a45 55%, #1d3330 100%);
+  --fondo-tarjeta: #2a2a42;
+  --fondo-campo: #1f1f33;
+
+  --texto-principal: #ecebf5;
+  --texto-suave: #b3b2c8;
+
+  --borde: #45456a;
+  --sombra-suave: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --sombra-fuerte: 0 10px 26px rgba(0, 0, 0, 0.6);
+}
+
+/* Elementos que tenían colores escritos directamente (no variables) */
+:root[data-tema="oscuro"] .encabezado {
+  background: linear-gradient(135deg, #5b3a6e, #2f4f7a);
+}
+
+:root[data-tema="oscuro"] .pie {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+:root[data-tema="oscuro"] .mensaje--error {
+  background: #3d2530;
+  border-color: #c96b7a;
+  color: #f2b8c0;
 }
